@@ -22,7 +22,7 @@ class Measurement
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 0)]
-    private ?string $celcius = null;
+    private ?string $celsius = null;
 
     public function getId(): ?int
     {
@@ -46,21 +46,21 @@ class Measurement
         return $this->date;
     }
 
-    public function setDate(\DateTime $date): static
+    public function setDate(?\DateTime $date): static
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getCelcius(): ?string
+    public function getCelsius(): ?string
     {
-        return $this->celcius;
+        return $this->celsius;
     }
 
-    public function setCelcius(string $celcius): static
+    public function setCelsius(?string $celsius): static
     {
-        $this->celcius = $celcius;
+        $this->celsius = $celsius;
 
         return $this;
     }

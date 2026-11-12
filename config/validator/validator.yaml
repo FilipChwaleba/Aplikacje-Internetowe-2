@@ -1,0 +1,48 @@
+App\Entity\Measurement:
+    properties:
+        location:
+            - NotNull:
+                  groups: ['new', 'edit']
+                  message: 'Wybierz lokację.'
+
+
+        date:
+            - NotNull:
+                  groups: ['new', 'edit']
+                  message: 'Wprowadź datę.'
+
+        celsius:
+            - NotBlank:
+                  groups: ['new', 'edit']
+                  message: 'Wprowadź temperaturę.'
+
+            - Range:
+                  min: -180
+                  max: 180
+                  groups: ['new', 'edit']
+                  notInRangeMessage: 'Temperatura musi być w przedziale od {{ min }} do {{ max }} stopni.'
+                  invalidMessage: 'Wprowadź poprawną wartość.'
+
+App\Entity\Location:
+    properties:
+        latitude:
+            - NotBlank:
+                  groups: ['new', 'edit']
+                  message: 'Wprowadź szerokość geograficzną.'
+
+            - Range:
+                  min: -90
+                  max: 90
+                  groups: ['new', 'edit']
+                  notInRangeMessage: 'Szerokość geograficzna musi być w przedziale od {{ min }} do {{ max }}.'
+
+        longitude:
+            - NotBlank:
+                  groups: ['new', 'edit']
+                  message: 'Wprowadź długość geograficzną.'
+
+            - Range:
+                  min: -180
+                  max: 180
+                  groups: ['new', 'edit']
+                  notInRangeMessage: 'Długość geograficzna musi być w przedziale od {{ min }} do {{ max }}.'

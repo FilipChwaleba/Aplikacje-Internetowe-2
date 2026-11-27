@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Weather CSV | Pogodynka{% endblock %}
+
+{% block body %}
+    <main class="container pb-4">
+        <h1>Weather in {{ city|e('html') }}, {{ country|e('html') }}</h1>
+        <pre class="bg-white border rounded p-3">{{ block('payload')|e('html') }}</pre>
+    </main>
+{% endblock %}
+
+{% block payload -%}
+city,country,date,celsius,fahrenheit
+{%- for m in measurements -%}
+    {{- "\n" -}}
+    "{{- city|replace({'"': '""'})|raw -}}",
+    "{{- country|replace({'"': '""'})|raw -}}",
+    {{- m.date|date('Y-m-d') -}},
+    {{- m.celsius -}}
+    {{- m.fahrenheit }}
+{%- endfor -%}
+{%- endblock %}

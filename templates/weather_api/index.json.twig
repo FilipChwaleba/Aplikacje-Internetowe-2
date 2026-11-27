@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Weather JSON | Pogodynka{% endblock %}
+
+{% block body %}
+{% autoescape 'html' %}
+<main class="container pb-4">
+<h1>Weather in {{ city }}, {{ country }}</h1>
+<pre class="bg-white border rounded p-3"><code>{{ block('payload')|trim|e('html') }}</code></pre>
+</main>
+{% endautoescape %}
+{% endblock %}
+
+{% macro quoted(value) -%}
+{%- set escapes = {'\\': '\\\\', '"': '\\"'} -%}
+
+{%- for code in 0..31 -%}
+{%- set character = '%c'|format(code) -%}
+{%- set escapes = escapes|merge({(character): '\\u%04x'|format(code)}) -%}
+{%- endfor -%}
+
+"{{- value|replace(escapes)|raw -}}"
+{%- endmacro %}
+
+{% macro temperature(value) -%}
+{%- if value is null -%}
+null
+{%- elseif value is same as(value ~ '') -%}
+{{- _self.quoted(value) -}}
+{%- else -%}
+{{- value -}}
+{%- endif -%}
+{%- endmacro %}
+
+{% block payload %}
+{
+    "city": {{ _self.quoted(city) }},
+    "country": {{ _self.quoted(country) }},
+    "measurements": [
+        {% for m in measurements %}
+        {
+            "date": "{{ m.date|date('Y-m-d')|raw }}",
+            "celsius": {{ _self.temperature(m.celsius) }},
+            "fahrenheit": {{ _self.temperature(m.fahrenheit) }}
+        }{{ loop.last ? '' : ',' }}
+        {% endfor %}
+    ]
+}
+{% endblock %}
